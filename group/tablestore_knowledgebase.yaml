@@ -1,0 +1,53 @@
+settings:
+  - name: ots_endpoint
+    type: text-input
+    required: true
+    label:
+      en_US: Tablestore Endpoint
+      zh_Hans: 表格存储访问地址
+    placeholder:
+      en_US: "e.g., https://instance.region.ots.aliyuncs.com"
+      zh_Hans: "例如：https://instance.cn-hangzhou.ots.aliyuncs.com"
+  
+  - name: ots_instance_name
+    type: text-input
+    required: true
+    label:
+      en_US: Tablestore Instance Name
+      zh_Hans: 表格存储实例名称
+    placeholder:
+      en_US: "Your Tablestore instance name"
+      zh_Hans: "你的表格存储实例名称"
+  
+  - name: ots_access_key_id
+    type: secret-input
+    required: true
+    label:
+      en_US: Access Key ID
+      zh_Hans: Access Key ID
+    placeholder:
+      en_US: "Your Alibaba Cloud Access Key ID"
+      zh_Hans: "阿里云 Access Key ID"
+  
+  - name: ots_access_key_secret
+    type: secret-input
+    required: true
+    label:
+      en_US: Access Key Secret
+      zh_Hans: Access Key Secret
+    placeholder:
+      en_US: "Your Alibaba Cloud Access Key Secret"
+      zh_Hans: "阿里云 Access Key Secret"
+  
+  - name: api_key
+    type: text-input
+    required: false
+    label:
+      en_US: Endpoint Protection Key
+      zh_Hans: 端点保护密钥
+    placeholder:
+      en_US: "Optional. Protect the endpoint from unauthorized access"
+      zh_Hans: "可选。保护端点免受未授权访问"
+
+endpoints:
+  - endpoints/tablestore_knowledgebase.yaml
