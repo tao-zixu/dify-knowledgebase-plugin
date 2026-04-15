@@ -88,13 +88,15 @@ class TablestoreKnowledgebaseEndpoint(Endpoint):
                 client_errors = {
                     "BAD_REQUEST", "UNAUTHORIZED", "FORBIDDEN", "NOT_FOUND",
                     "METHOD_NOT_ALLOWED", "CONFLICT", "VALIDATION_ERROR",
-                    "INVALID_PARAMETER", "QUOTA_EXHAUSTED", "FLOW_CONTROL"
+                    "INVALID_PARAMETER", "QUOTA_EXHAUSTED"
                 }
                 server_errors = {
                     "INTERNAL_SERVER_ERROR", "SERVICE_UNAVAILABLE"
                 }
                 
-                if error_code in client_errors:
+                if error_code == "FLOW_CONTROL":
+                    http_status = 429
+                elif error_code in client_errors:
                     http_status = 400
                 else:
                     http_status = 500
