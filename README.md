@@ -9,7 +9,7 @@ Integrate Alibaba Cloud Tablestore RAG service as a Dify external knowledge base
 
 - An Alibaba Cloud account with Tablestore service enabled
 - A Tablestore instance with a RAG knowledge base created
-- Tablestore Endpoint URL (e.g., `http://ots-{instance-name}.aliyuncs.com`)
+- Tablestore Endpoint URL (e.g., `http://ots-{region}.aliyuncs.com`)
 - Tablestore instance name
 - Alibaba Cloud Access Key ID and Access Key Secret
 - Knowledge base name from the OTS RAG platform (`knowledgeBaseName`)
@@ -20,7 +20,7 @@ After installing the plugin, configure the following parameters:
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
-| Tablestore Endpoint | Endpoint URL of the Tablestore instance | `http://ots-{instance-name}.aliyuncs.com` |
+| Tablestore Endpoint | Endpoint URL of the Tablestore instance | `http://ots-{region}.aliyuncs.com` |
 | Tablestore Instance Name | Name of the Tablestore instance | `your-instance` |
 | Access Key ID | Alibaba Cloud Access Key ID | `****` |
 | Access Key Secret | Alibaba Cloud Access Key Secret | `****` |
