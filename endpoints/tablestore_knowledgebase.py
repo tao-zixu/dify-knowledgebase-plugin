@@ -28,7 +28,7 @@ class TablestoreKnowledgebaseEndpoint(Endpoint):
         knowledge_id = body.get("knowledge_id", "")
         query = body.get("query", "")
         retrieval_setting = body.get("retrieval_setting", {})
-        top_k = retrieval_setting.get("top_k", 5)
+        top_k = retrieval_setting.get("top_k")
         score_threshold = retrieval_setting.get("score_threshold", 0.0)
         
         if not query:
@@ -46,7 +46,7 @@ class TablestoreKnowledgebaseEndpoint(Endpoint):
         if not all([ots_endpoint, ots_instance, ots_ak, ots_sk]):
             return Response(
                 response=json.dumps({"error": "Missing OTS configuration"}, ensure_ascii=False),
-                status=500,
+                status=400,
                 content_type="application/json"
             )
         
@@ -64,20 +64,46 @@ class TablestoreKnowledgebaseEndpoint(Endpoint):
                     "type": "TEXT",
                     "text": query
                 },
-                "retrievalConfiguration": {
+            }
+            
+            if top_k is not None:
+                retrieve_request["retrievalConfiguration"] = {
+                    "denseVectorSearchConfiguration": {
+                        "numberOfResults": top_k
+                    },
+                    "fullTextSearchConfiguration": {
+                        "numberOfResults": top_k
+                    },
                     "rerankingConfiguration": {
                         "numberOfResults": top_k
                     }
                 }
-            }
             
             response_data = client.retrieve(retrieve_request)
 
             if response_data.get("code") != "SUCCESS":
+                error_code = response_data.get("code", "INTERNAL_SERVER_ERROR")
                 error_msg = response_data.get("message", "Unknown error")
+                
+                client_errors = {
+                    "BAD_REQUEST", "UNAUTHORIZED", "FORBIDDEN", "NOT_FOUND",
+                    "METHOD_NOT_ALLOWED", "CONFLICT", "VALIDATION_ERROR",
+                    "INVALID_PARAMETER", "QUOTA_EXHAUSTED", "FLOW_CONTROL"
+                }
+                server_errors = {
+                    "INTERNAL_SERVER_ERROR", "SERVICE_UNAVAILABLE"
+                }
+                
+                if error_code in client_errors:
+                    http_status = 400
+                else:
+                    http_status = 500
+                    if error_code not in server_errors:
+                        error_code = "INTERNAL_SERVER_ERROR"
+                
                 return Response(
-                    response=json.dumps({"error": f"Retrieve API error: {error_msg}"}, ensure_ascii=False),
-                    status=500,
+                    response=json.dumps({"error": f"Retrieve API error: [{error_code}] {error_msg}"}, ensure_ascii=False),
+                    status=http_status,
                     content_type="application/json"
                 )
             
@@ -97,7 +123,7 @@ class TablestoreKnowledgebaseEndpoint(Endpoint):
                 metadata = item.get("metadata", {}) or {}
                 
                 if oss_key:
-                    title = oss_key.split("/")[-1] if "/" in oss_key else oss_key
+                    title = oss_key
                 else:
                     title = doc_id or ""
                 
@@ -110,14 +136,14 @@ class TablestoreKnowledgebaseEndpoint(Endpoint):
                         "docId": doc_id,
                         "chunkId": chunk_id,
                         "subspace": subspace,
-                        **{k: v for k, v in metadata.items() if isinstance(v, (str, int, float, bool))}
+                        **metadata
                     }
                 })
         
         except tablestore.OTSClientError as e:
             return Response(
                 response=json.dumps({"error": f"OTS Client error: {str(e)}"}, ensure_ascii=False),
-                status=500,
+                status=400,
                 content_type="application/json"
             )
         except tablestore.OTSServiceError as e:
