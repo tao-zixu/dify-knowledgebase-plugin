@@ -6,8 +6,8 @@ settings:
       en_US: Tablestore Endpoint
       zh_Hans: 表格存储访问地址
     placeholder:
-      en_US: "e.g., https://instance.region.ots.aliyuncs.com"
-      zh_Hans: "例如：https://instance.cn-hangzhou.ots.aliyuncs.com"
+      en_US: "e.g., http://ots-{region}.aliyuncs.com"
+      zh_Hans: "例如：http://ots-{region}.aliyuncs.com"
   
   - name: ots_instance_name
     type: text-input
