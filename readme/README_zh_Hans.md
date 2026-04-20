@@ -9,7 +9,7 @@
 
 - 已开通阿里云表格存储服务的阿里云账号
 - 已创建表格存储实例，并在实例中创建了 RAG 知识库
-- 表格存储 Endpoint URL（例如 `http://ots-{region}.aliyuncs.com`）
+- 表格存储 Endpoint URL（例如 `https://instanceName.RegionID.ots.aliyuncs.com`）
 - 表格存储实例名称
 - 阿里云 Access Key ID 和 Access Key Secret
 - OTS RAG 平台中的知识库名称（`knowledgeBaseName`）
@@ -20,7 +20,7 @@
 
 | 配置项 | 说明 | 示例 |
 |--------|------|------|
-| Tablestore Endpoint | 表格存储实例的 Endpoint URL | `http://ots-{region}.aliyuncs.com` |
+| Tablestore Endpoint | 表格存储实例的 Endpoint URL | `https://instanceName.RegionID.ots.aliyuncs.com` |
 | Tablestore Instance Name | 表格存储实例名称 | `your-instance` |
 | Access Key ID | 阿里云 Access Key ID | `****` |
 | Access Key Secret | 阿里云 Access Key Secret | `****` |
